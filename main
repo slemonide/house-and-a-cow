@@ -1,0 +1,78 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname main) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+(require 2htdp/image)
+
+;; The house
+(define roof
+  (triangle 300 "solid" "orange"))
+
+(define window-tile
+  (rectangle 40 40 "solid" "lightblue"))
+
+(define window
+  (overlay/offset (overlay/offset window-tile
+                                  60 0
+                                  window-tile)
+                  0 60
+                  (overlay/offset window-tile
+                                  60 0
+                                  window-tile)))
+ 
+(define walls
+  (overlay window
+           (rectangle 300 300 "solid" "brown")))
+
+(define house
+  (above roof
+         walls))
+
+;; The environment
+
+(define grass
+  (rectangle 1500 100 "solid" "darkgreen"))
+
+;; The cow
+(define eye
+  (overlay (circle 5 "solid" "blue")
+           (circle 10 "solid" "white")))
+
+(define nose
+  (circle 11 "solid" "red"))
+
+(define mouth
+  (beside (rectangle 5 10 "solid" "pink") ; these are the teeth, or whatever
+          (rectangle 3 10 "solid" "black")
+          (rectangle 5 10 "solid" "pink")
+          (rectangle 3 10 "solid" "black")
+          (rectangle 5 10 "solid" "pink")))
+
+(define cow-face
+  (above (beside eye
+                 eye)
+         nose
+         mouth))
+
+(define cow-head
+  (overlay 
+           cow-face
+           (circle 60 "solid" "black")))
+
+(define cow-body
+  (circle 100 "solid" "black"))
+
+(define cow-legs
+  (beside (circle 50 "solid" "black")
+          (circle 50 "solid" "black")))
+
+(define cow
+  (above (text "Moooo..." 100 "cyan")
+         (beside cow-head
+                 (above cow-body
+                        cow-legs))))
+         
+;; Finally glue everything together
+(above (beside/align "bottom"
+                     house
+                     cow)
+       grass)
